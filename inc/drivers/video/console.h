@@ -9,4 +9,5 @@ extern uint32_t console_def_bg;
 void init_console();
 void write_char(char c);
 void write_str(const char *c);
+void write_int(int i);
 #endif

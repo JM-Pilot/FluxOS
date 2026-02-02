@@ -33,3 +33,22 @@ void write_str(const char *s){
 	for (int i = 0; s[i] != '\0'; i++)
 		write_char(s[i]);
 }
+
+void write_int(int i){
+	int totl_num[256];
+	int ptr = 0;
+	if (i < 0) {
+		write_char('-');
+		i = -i;
+	} else if (i == 0) {
+		write_char('0');
+		return;
+	}   
+    	while (i != 0) {
+		totl_num[ptr++] = i % 10;
+		i = i / 10;
+    	}
+	while (ptr-- != 0){
+		write_char('0' + totl_num[ptr]);
+	}
+}

@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <arch/x86_64/ints/isr.h>
 #include <arch/x86_64/ints/idt.h>
-
+#include <drivers/video/console.h>
+#include <kernel/cpu_hang.h>
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -46,6 +47,11 @@ uint64_t isr_table[32] = {
     (uint64_t)isr28, (uint64_t)isr29, (uint64_t)isr30, (uint64_t)isr31
 };
 
+void print_error(){
+    write_str("\n[ERR] EXCEPTION REACHED!\n");
+    write_str("[ERR] HALTING CPU (UNRECOVERABLE)");
+    cpu_hang();
+}
 void init_isr(){
 	for (int i = 0; i < 32; i++){
 		idt_set_entry(i, isr_table[i], 0x8e);

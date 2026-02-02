@@ -17,7 +17,7 @@ void kernel_main(){
 	init_console();
 	
 	write_str("Finished Initializing\nWelcome to FluxOS!\n\n");
-	write_str("[ERR] NO USER SPACE FOUND YET!\n");
+	write_str("[ERR] NO USER SPACE YET!\n");
 	asm volatile ("sti");
 	
 	cpu_hang();

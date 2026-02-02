@@ -129,7 +129,7 @@ isr31:
 	call exception_handler
 	iretq
 
+extern print_error
 exception_handler:
-	cli
-.hang:	hlt
-	jmp .hang
+	call print_error
+	; Hang (NO RETURN, yes very stupid move - JM-Pilot)
