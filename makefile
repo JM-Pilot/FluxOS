@@ -12,7 +12,8 @@ C_OBJS = $(patsubst $(SRC)/%.c, $(BIN)/%.o, $(C_SRCS))
 ASM_SRCS = $(shell find $(SRC) -iname "*.asm")
 ASM_OBJS = $(patsubst $(SRC)/%.asm, $(BIN)/%.o, $(ASM_SRCS))
 
-OBJS = $(C_OBJS) $(ASM_OBJS)
+FONT_OBJ = $(BIN)/common/default8x16.o
+OBJS = $(C_OBJS) $(ASM_OBJS) $(FONT_OBJ)
 
 C_FLAGS = -ffreestanding \
 	-nostdlib \
@@ -46,6 +47,10 @@ $(BIN)/%.o: $(SRC)/%.c | $(BIN)
 $(BIN)/%.o: $(SRC)/%.asm | $(BIN)
 	mkdir -p $(dir $@)
 	$(NASM) $< -o $@
+
+$(FONT_OBJ): $(SRC)/common/default8x16.psf
+	mkdir -p $(dir $@)
+	objcopy -O elf64-x86-64 -B i386 -I binary $< $@
 
 $(BIN)/$(OUTPUT).bin: $(OBJS)
 	$(CC) $(LD_FLAGS) $^ -o $@

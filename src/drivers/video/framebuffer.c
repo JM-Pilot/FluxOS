@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <boot/limine.h>
 #include <boot/requests.h>
-#include <drivers/framebuffer.h>
+#include <drivers/video/framebuffer.h>
 
 struct limine_framebuffer *framebuffer;
 uint32_t *framebuffer_ptr;
