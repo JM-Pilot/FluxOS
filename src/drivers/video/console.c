@@ -22,7 +22,7 @@ void write_char(char c){
 		insert_newline();
 		return;
 	}
-	if (console_x + 16 >= framebuffer->width){
+	if ((uint64_t)console_x + 16 >= framebuffer->width){
 		insert_newline();
 	}
 	psf_render_char(c, console_x, console_y, console_def_fg, console_def_bg);

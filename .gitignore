@@ -1,3 +1,5 @@
 bin
-*.bin
-iso_root/*.bin
+iso_root/FluxOS.bin
+iso_root/Limine/*.bin
+iso_root/Limine/*.sys
+Limine

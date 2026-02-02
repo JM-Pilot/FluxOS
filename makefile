@@ -39,7 +39,15 @@ LD_FLAGS = -ffreestanding \
 
 OUTPUT = FluxOS
 
-all: $(BIN)/$(OUTPUT).iso
+all: $(BIN)/$(OUTPUT).iso 
+
+limine:
+	if [ ! -d Limine ]; then \
+		git clone https://codeberg.org/Limine/Limine.git --branch=v10.x-binary --depth=1; \
+	fi
+	mkdir -p $(ISO_ROOT)/Limine
+	cp Limine/*.bin $(ISO_ROOT)/Limine/
+	cp Limine/*.sys $(ISO_ROOT)/Limine/
 $(BIN)/%.o: $(SRC)/%.c | $(BIN)
 	mkdir -p $(dir $@)
 	$(CC) $(C_FLAGS) -c $< -o $@
@@ -55,7 +63,7 @@ $(FONT_OBJ): $(SRC)/common/default8x16.psf
 $(BIN)/$(OUTPUT).bin: $(OBJS)
 	$(CC) $(LD_FLAGS) $^ -o $@
 
-$(BIN)/$(OUTPUT).iso: $(BIN)/$(OUTPUT).bin
+$(BIN)/$(OUTPUT).iso: $(BIN)/$(OUTPUT).bin limine
 	cp $< $(ISO_ROOT)
 	xorriso -as mkisofs -R -r -J -b Limine/limine-bios-cd.bin \
         -no-emul-boot -boot-load-size 4 -boot-info-table -hfsplus \
@@ -71,3 +79,4 @@ run: $(BIN)/$(OUTPUT).iso
 
 clean:
 	rm -rf $(BIN)
+	rm -rf iso_root/FluxOS.bin
