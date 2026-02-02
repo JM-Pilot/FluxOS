@@ -1,1 +1,3 @@
 bin
+*.bin
+iso_root/*.bin
