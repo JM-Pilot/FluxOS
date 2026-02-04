@@ -25,11 +25,9 @@ void init_pmm(){
 }
 
 void pmm_print_usable_ram(){
-	write_str("Usable Ram: ");
-	write_int64(usable_ram);
-	write_str(" Bytes\n");
-	write_int64(usable_ram / 1024);
-	write_str(" KB\n");
+	/* I am smart */
+	printf("Usable Ram: %d Bytes, %d Kilobytes\n", usable_ram, usable_ram / 1024);
+	printf("            %d Megabytes,    %d Gigabytes", usable_ram / 1024 / 1024, usable_ram / 1024 / 1024 / 1024);
 }
 
 uint64_t pmm_allocate(){

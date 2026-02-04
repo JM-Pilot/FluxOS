@@ -3,15 +3,15 @@
 #include <stdint.h>
 #include <drivers/video/console.h>
 void printf(const char *fmt, ...){
-	uint32_t fi = 0;
+	uint64_t fi = 0;
 	va_list arg;
 	va_start (arg, fmt);
 	for (int i = 0 ; fmt[i] != '\0'; i++){
 		if (fmt[i] == '%'){
 			switch (fmt[i + 1]){
 				case 'd':
-					fi = va_arg(arg,int);
-					write_int(fi);
+					fi = va_arg(arg,long);
+					write_int64(fi);
 					i++;
 					break;
 				case 'c':
