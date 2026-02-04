@@ -1,3 +1,9 @@
+/*
+ *          Flux Kernel
+ * Copyright (c) jm-pilot, 2025-2026
+ * Copytight (c) sakettor, 2025-2026
+ */
+
 #include <libc/stdio.h>
 #include <stdarg.h>
 #include <stdint.h>

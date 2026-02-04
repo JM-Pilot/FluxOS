@@ -1,3 +1,9 @@
+/*
+ *          Flux Kernel
+ * Copyright (c) jm-pilot, 2025-2026
+ * Copytight (c) sakettor, 2025-2026
+ */
+
 #include <arch/x86_64/io/io_port.h>
 #include <stdint.h>
 void outb(uint16_t port, uint8_t val){

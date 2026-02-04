@@ -12,8 +12,11 @@ C_OBJS = $(patsubst $(SRC)/%.c, $(BIN)/%.o, $(C_SRCS))
 ASM_SRCS = $(shell find $(SRC) -iname "*.asm")
 ASM_OBJS = $(patsubst $(SRC)/%.asm, $(BIN)/%.o, $(ASM_SRCS))
 
+AS_SRCS = $(shell find $(SRC) -iname "*.S")
+AS_OBJS = $(patsubst $(SRC)/%.S, $(BIN)/%.o, $(AS_SRCS))
+
 FONT_OBJ = $(BIN)/common/default8x16.o
-OBJS = $(C_OBJS) $(ASM_OBJS) $(FONT_OBJ)
+OBJS = $(C_OBJS) $(ASM_OBJS) $(AS_OBJS) $(FONT_OBJ)
 
 C_FLAGS = -ffreestanding \
 	-nostdlib \
@@ -56,6 +59,10 @@ $(BIN)/%.o: $(SRC)/%.asm | $(BIN)
 	mkdir -p $(dir $@)
 	$(NASM) $< -o $@
 
+$(BIN)/%.o: $(SRC)/%.S | $(BIN)
+	mkdir -p $(dir $@)
+	$(CC) $(C_FLAGS) -c $< -o $@
+
 $(FONT_OBJ): $(SRC)/common/default8x16.psf
 	mkdir -p $(dir $@)
 	objcopy -O elf64-x86-64 -B i386 -I binary $< $@
@@ -75,7 +82,7 @@ $(BIN)/$(OUTPUT).iso: $(BIN)/$(OUTPUT).bin limine
 $(BIN):
 	mkdir -p $@
 run: $(BIN)/$(OUTPUT).iso
-	qemu-system-x86_64 -cdrom $< -bios $(ISO_ROOT)/EFI/OVMF.4m.fd -d int,cpu_reset -D $(BIN)/QEMU_LOG.txt -no-reboot -no-shutdown
+	qemu-system-x86_64 -cdrom $< -bios $(ISO_ROOT)/EFI/OVMF.4m.fd -d int,cpu_reset -D $(BIN)/QEMU_LOG.txt -no-reboot -no-shutdown -m 2G
 
 clean:
 	rm -rf $(BIN)

@@ -1,3 +1,9 @@
+/*
+ *          Flux Kernel
+ * Copyright (c) messycodelover, 2025-2026
+ * Copyright (c) sakettor, 2025-2026
+ */
+
 /* Tell the linker that we want an x86_64 ELF64 output file */
 OUTPUT_FORMAT(elf64-x86-64)
 
