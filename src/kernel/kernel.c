@@ -6,6 +6,7 @@
 #include <drivers/video/psf.h>
 #include <drivers/video/console.h>
 #include <mem/pmm.h>
+#include <libc/stdio.h>
 void kernel_main(){
 	asm volatile ("cli");
 	check_requests();
@@ -24,6 +25,6 @@ void kernel_main(){
 	pmm_print_usable_ram();
 	
 	asm volatile ("sti");
-	
+	// asm volatile ("int $0x00");
 	cpu_hang();
 }

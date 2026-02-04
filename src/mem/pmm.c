@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <boot/limine.h>
 #include <drivers/video/console.h>
+#include <libc/stdio.h>
 #define PAGE_SIZE 4096
 
 uint64_t usable_ram;
@@ -25,10 +26,10 @@ void init_pmm(){
 
 void pmm_print_usable_ram(){
 	write_str("Usable Ram: ");
-	write_int(usable_ram);
-	write_str(" Bytes \n            ");
-	write_int(usable_ram / 1028);
-	write_str(" KB \n");
+	write_int64(usable_ram);
+	write_str(" Bytes\n");
+	write_int64(usable_ram / 1024);
+	write_str(" KB\n");
 }
 
 uint64_t pmm_allocate(){

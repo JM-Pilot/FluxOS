@@ -3,6 +3,7 @@
 #include <arch/x86_64/ints/idt.h>
 #include <drivers/video/console.h>
 #include <kernel/cpu_hang.h>
+#include <libc/stdio.h>
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -46,11 +47,75 @@ uint64_t isr_table[32] = {
     (uint64_t)isr24, (uint64_t)isr25, (uint64_t)isr26, (uint64_t)isr27,
     (uint64_t)isr28, (uint64_t)isr29, (uint64_t)isr30, (uint64_t)isr31
 };
+const char *error_codes[32] = {
+    "Divide Error (DIV BY ZERO)",
+    "Debug",
+    "Non-Maskable Interrupt",
+    "Breakpoint",
+    "Overflow",
+    "Bound Range Exceeded",
+    "Invalid Opcode",
+    "Device Not Available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Invalid TSS",
+    "Segment Not Present",
+    "Stack-Segment Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Reserved",
+    "x86 Floating-Point Exception",
+    "Alignment Check",
+    "Machine Check",
+    "SIMD Floating-Point Exception",
+    "Virtualization Exception",
+    "Control Protection Exception",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Security Exception",
+    "Reserved"
+};
+__attribute__((noreturn))
+void print_error(struct registers *reg){
+    write_error("\n[ERR] EXCEPTION REACHED!\n");
+    console_def_fg = 0xFF0000;
+    console_def_bg = 0x0000FF;
 
-void print_error(){
-    write_str("\n[ERR] EXCEPTION REACHED!\n");
-    write_str("[ERR] HALTING CPU (UNRECOVERABLE)");
+    printf("Error Code: %s\n", error_codes[reg->vector]);
+
+    printf("RIP: %x\n", reg->rip);
+    printf("CS: %x\n", reg->cs);
+    printf("RFLAGS: %x\n", reg->rflags);
+
+    printf("RAX: %x\n", reg->rax);
+    printf("RBX: %x\n", reg->rbx);
+    printf("RCX: %x\n", reg->rcx);
+    printf("RDX: %x\n", reg->rdx);
+
+    printf("RSI: %x\n", reg->rsi);
+    printf("RDI: %x\n", reg->rdi);
+    printf("RBP: %x\n", reg->rbp);
+    printf("RSP: %x\n", reg->rsp);
+
+    printf("R8 : %x\n", reg->r8);
+    printf("R9 : %x\n", reg->r9);
+    printf("R10: %x\n", reg->r10);
+    printf("R11: %x\n", reg->r11);
+
+    printf("R12: %x\n", reg->r12);
+    printf("R13: %x\n", reg->r13);
+    printf("R14: %x\n", reg->r14);
+    printf("R15: %x\n", reg->r15);
+
+    write_error("[ERR] HALTING CPU (UNRECOVERABLE)");
     cpu_hang();
+    for (;;);
 }
 void init_isr(){
 	for (int i = 0; i < 32; i++){
