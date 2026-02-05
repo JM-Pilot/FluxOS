@@ -14,11 +14,12 @@ void init_all(){
 	init_gdt();
 	init_idt();
 	
-	init_pmm();
 
 	init_framebuffer();
 	init_psf();
 	init_console();
+
+	init_pmm();
 
 	write_str("Finished Initializing\nWelcome to FluxOS!\n\n");
 

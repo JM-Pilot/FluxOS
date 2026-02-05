@@ -5,5 +5,5 @@
 void init_pmm();
 void pmm_print_usable_ram();
 uint64_t pmm_allocate();
-void pmm_free(uint64_t phys_addr);
+void pmm_free(void* addr);
 #endif

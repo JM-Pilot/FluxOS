@@ -107,12 +107,16 @@ void init_idt(){
 
 
 // this function gets called on interrupt
-void handleInterruptAsm(struct interrupt_frame *f) {
+void handleInterruptAsm(struct interrupt_frame *f, uint64_t cr2) {
 	if (f->intNo < 32) {
-		printf("\nGot called with interrupt %s.\n", faultMessages[f->intNo]);
+		if (f->intNo == 14) { // page fault
+            printf("\nPage Fault trying to access memory at %x.\nError code: %d.\n", cr2, f->errorCode);
+        } else {
+            printf("\nCaught an exception '%s'.\n", faultMessages[f->intNo]);
+        }
 		printf("--------------------------------------\n");
 		printf("REGISTER TRACE:\n");
-		printf("RAX=%x; RBX=%x; RCX=%x;\nRDX=%x; RSI=%x; RDI=%x;\nRIP=%x;  CS=%x; RSP=%x;\nError code: %d.\nHalting.", f->rax, f->rbx, f->rcx, f->rdx, f->rsi, f->rdi, f->rip, f->cs, f->rsp, f->errorCode);
+		printf("RAX=%x; RBX=%x; RCX=%x;\nRDX=%x; RSI=%x; RDI=%x;\nRIP=%x;  CS=%x; RSP=%x;\n", f->rax, f->rbx, f->rcx, f->rdx, f->rsi, f->rdi, f->rip, f->cs, f->rsp);
 		cpu_hang();
 	}
 }

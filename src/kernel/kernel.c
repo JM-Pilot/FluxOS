@@ -9,6 +9,6 @@
 
 void kernel_main(){
 	init_all();
-	asm volatile ("int $0x00");
+	// asm volatile ("int $0x00");
 	cpu_hang();
 }
